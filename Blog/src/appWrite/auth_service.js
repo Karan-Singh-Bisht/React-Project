@@ -1,6 +1,6 @@
 //This is a template which will always remain same.
 
-import config from "../config/config";  //this is the one with all the env files.
+import config from "../conf/conf";  //this is the one with all the env files.
 import { Client, Account, ID } from "appwrite";
 
 export class AuthService{

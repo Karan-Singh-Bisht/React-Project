@@ -1,4 +1,4 @@
-import config from "../config/config";  //This is the file with all the env files.
+import conf from "../conf/conf";  //This is the file with all the env files.
 import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 export class Service {
@@ -7,8 +7,8 @@ export class Service {
 	bucket; //storage
 	constructor() {
 		this.client //this only works inside Objects and normal functions.
-			.setEndpoint(config.appwriteUrl) //Methods are functions stored as object value.
-			.setProject(config.appwriteProjectId);
+			.setEndpoint(conf.appwriteUrl) //Methods are functions stored as object value.
+			.setProject(conf.appwriteProjectId);
 		this.databases = new Databases(this.client);
 		this.bucket = new Storage(this.client);
 	}
@@ -16,8 +16,8 @@ export class Service {
     async createPost({title,slug,content,featuredImage,status,userId}){
         try{
             return await this.databases.createDocument(
-                config.appwriteDataBaseId,
-                config.appwriteCollectionId,
+                conf.appwriteDataBaseId,
+                conf.appwriteCollectionId,
                 slug,
                 {
                     title,
@@ -35,8 +35,8 @@ export class Service {
     async updatePost(slug,{title,content,featuredImage,status}){
         try {
             return await this.databases.updateDocument(
-                config.appwriteDataBaseId,
-                config.appwriteCollectionId,
+                conf.appwriteDataBaseId,
+                conf.appwriteCollectionId,
                 slug,
                 {
                     title,
@@ -53,8 +53,8 @@ export class Service {
     async deletePost(slug){
         try{
             await this.databases.deleteDocument(
-                config.appwriteDataBaseId,
-                config.appwriteCollectionId,
+                conf.appwriteDataBaseId,
+                conf.appwriteCollectionId,
                 slug,
             )
             return true; 
@@ -67,8 +67,8 @@ export class Service {
     async getUniquePost(slug){
         try{
             return await this.databases.getDocument(
-                config.appwriteDataBaseId,
-                config.appwriteCollectionId,
+                conf.appwriteDataBaseId,
+                conf.appwriteCollectionId,
                 slug,
             )
         }catch(error){
@@ -80,8 +80,8 @@ export class Service {
     async getAllPosts(){
         try{
             return await this.databases.listDocuments(
-                config.appwriteDataBaseId,
-                config.appwriteCollectionId,
+                conf.appwriteDataBaseId,
+                conf.appwriteCollectionId,
                 [Query.equal("status","active")]
             )
         }catch(error){
@@ -94,7 +94,7 @@ export class Service {
     async uploadFile(file){
         try{
             return await this.bucket.createFile(
-                config.appwriteBucketId,
+                conf.appwriteBucketId,
                 ID.unique(),
                 file
             )
@@ -107,7 +107,7 @@ export class Service {
     async deleteFile(fileId){
         try{
             await this.bucket.deleteFile(
-                config.appwriteBucketId,
+                conf.appwriteBucketId,
                 fileId,
             )
         }catch(error){
@@ -119,7 +119,7 @@ export class Service {
     getFilePreview(fileId){    //no need to use async bcuz its response is very fast.
         try{
             return this.bucket.getFilePreview(
-                config.appwriteBucketId,
+                conf.appwriteBucketId,
                 fileId,
             )
         }catch(error){
